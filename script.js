@@ -56,6 +56,13 @@ function SomeUser(firstName, lastName, age, isMale, isSubscribe = false) {
   this.mail = `${this.lastName}-${new Date().getFullYear() - this.age}@gmail.com`;
   this.isMale = isMale;
   this.isSubscribe = isSubscribe;
+  
+}
+
+function SomeUserPrototype() {
+  this.getFullName = function getFullName() {
+    return `${this.firstName} ${this.lastName}`;
+  }
 }
 
 function isAdult(user) {
@@ -77,7 +84,20 @@ function createUsers(amount = 1) {
   return db;
 }
 
+SomeUser.prototype = new SomeUserPrototype();
+
 const usersDataBase = createUsers(50);
+
+// 1 способ - формировать fullName на лету
+
+// const fullName = usersDataBase.map(function (user) {
+//   return `${user.firstName} ${user.lastName}`;
+// });
+// console.log('fullName');
+// console.table(fullName);
+
+
+// 2 способ - написать внешнюю функцию getFullName()
 
 // function getFullName(user) {
 //   return `${user.firstName} ${user.lastName}`;
@@ -86,37 +106,43 @@ const usersDataBase = createUsers(50);
 // const fullName2 = usersDataBase.map(function(user){
 //   return getFullName(user);
 // });
+// console.log('fullName2');
+// console.table(fullName2);
 
-// console.log(fullName2);
 
-const fullName = usersDataBase.map(function (user) {
-  return `${user.firstName} ${user.lastName}`;
-});
-console.log('fullName');
-console.table(fullName);
+// 3 способ - написать метод getFullName
 
-const adultUsers = usersDataBase.filter(function (user) {
-  return isAdult(user);
+const fullName3 = usersDataBase.map(function(element) {
+  return element.getFullName();
 });
 
-console.log('adultUsers');
-console.table(adultUsers);
+console.log('fullName3');
+console.table(fullName3);
 
-const adultGirls = usersDataBase.filter(function (user) {
-  return (!(user.age < ADULT_AGE) && !(user.isMale));
-})
 
-console.log('adultGirls');
-console.table(adultGirls);
 
-const adultGirlsMail = usersDataBase.map(function (user) {
-  return (!(user.age < ADULT_AGE) && !(user.isMale)) ? user.mail : false;
-  // if (!(user.age < ADULT_AGE) && !(user.isMale)) {
-  //   return user.mail;
-  // }
-}).filter(function(user) {
-  return user.mail;
-})
+// const adultUsers = usersDataBase.filter(function (user) {
+//   return isAdult(user);
+// });
 
-console.log('adultGirlsMail');
-console.table(adultGirlsMail);
+// console.log('adultUsers');
+// console.table(adultUsers);
+
+// const adultGirls = usersDataBase.filter(function (user) {
+//   return (!(user.age < ADULT_AGE) && !(user.isMale));
+// })
+
+// console.log('adultGirls');
+// console.table(adultGirls);
+
+// const adultGirlsMail = usersDataBase.map(function (user) {
+//   return (!(user.age < ADULT_AGE) && !(user.isMale)) ? user.mail : false;
+//   // if (!(user.age < ADULT_AGE) && !(user.isMale)) {
+//   //   return user.mail;
+//   // }
+// }).filter(function(user) {
+//   return user.mail;
+// })
+
+// console.log('adultGirlsMail');
+// console.table(adultGirlsMail);
