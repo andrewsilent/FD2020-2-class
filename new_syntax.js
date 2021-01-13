@@ -195,31 +195,31 @@ class Friend {
   //   return this.appleAmount + result;
   // }
 
-  getApplesCount() {        // А это самое универсальное решение, для любого уровня вложенности
+  
+  getApplesCount() {
+    // А это самое универсальное решение, для любого уровня вложенности
     let result = 0;
     getFriendsAppleCount(this);
     function getFriendsAppleCount(friend) {
       if (friend.friends.length > 0) {
-        friend.friends.forEach(e => getFriendsAppleCount(e));
+        friend.friends.forEach((e) => getFriendsAppleCount(e));
       }
       result += friend.appleAmount;
     }
     return result;
   }
 
-
-  
   addFriend(friend) {
     return this.friends.push(friend);
   }
 }
 
-const piter = new Friend('Piter', 10);
-const alex = new Friend('Alex', 20);
-const greg = new Friend('Greg', 10);
-const wilson = new Friend('Wilson', 10);
-const lu = new Friend('Lu', 15);
-const andrew = new Friend('Andrew', 15);
+const piter = new Friend("Piter", 10);
+const alex = new Friend("Alex", 20);
+const greg = new Friend("Greg", 10);
+const wilson = new Friend("Wilson", 10);
+const lu = new Friend("Lu", 15);
+const andrew = new Friend("Andrew", 15);
 
 andrew.addFriend(piter);
 andrew.addFriend(alex);
@@ -229,3 +229,19 @@ greg.addFriend(lu);
 
 console.log(andrew);
 console.log(andrew.getApplesCount());
+
+
+
+// интересный код в функциональном стиле с рекурсией внутри
+// function objMap(obj, func) {
+//   return Object.fromEntries(
+//     Object.entries(obj).map(([k, v]) => [
+//       k,
+//       v === Object(v) ? objMap(v, func) : func(v),
+//     ])
+//   );
+// }
+// let obj = { a: 1, b: 2, c: 3 };
+// let mappedObj = objMap(obj, (x) => x * x);
+
+// console.log(mappedObj);
