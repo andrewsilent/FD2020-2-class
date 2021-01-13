@@ -1,57 +1,57 @@
-class UserClass {
-  constructor(firstName, lastName, age) {
-    this._firstName = firstName;
-    this._lastName = lastName;
-    this._age = age;
-  }
+// class UserClass {
+//   constructor(firstName, lastName, age) {
+//     this._firstName = firstName;
+//     this._lastName = lastName;
+//     this._age = age;
+//   }
 
-  set firstName(f) {
-    this._firstName = f;
-  }
+//   set firstName(f) {
+//     this._firstName = f;
+//   }
 
-  get firstName() {
-    return this._firstName;
-  }
+//   get firstName() {
+//     return this._firstName;
+//   }
 
-  set lastName(l) {
-    this._lastName = l;
-  }
+//   set lastName(l) {
+//     this._lastName = l;
+//   }
 
-  get lastName() {
-    return this._lastName;
-  }
+//   get lastName() {
+//     return this._lastName;
+//   }
 
-  set age(a) {
-    this._age = a;
-  }
+//   set age(a) {
+//     this._age = a;
+//   }
 
-  get age() {
-    return this._age;
-  }
+//   get age() {
+//     return this._age;
+//   }
 
-  get fullName() {
-    return `${this.firstName} ${this.lastName}`;
-  }
+//   get fullName() {
+//     return `${this.firstName} ${this.lastName}`;
+//   }
 
-  // get isAdult() {
-  //   return this.age >= 18;
-  // }
+// get isAdult() {
+//   return this.age >= 18;
+// }
 
-  static isAdult(element) {
-    return element >= 18;
-  }
+//   static isAdult(element) {
+//     return element >= 18;
+//   }
 
-  set fullName([f, l]) {
-    this.firstName = f;
-    this.lastName = l;
-  }
-}
+//   set fullName([f, l]) {
+//     this.firstName = f;
+//     this.lastName = l;
+//   }
+// }
 
-const user2 = new UserClass("andrew", "silent", 25);
+// const user2 = new UserClass("andrew", "silent", 25);
 
-console.log(user2.fullName);
-console.log(user2.age);
-console.log(user2.isAdult);
+// console.log(user2.fullName);
+// console.log(user2.age);
+// console.log(user2.isAdult);
 
 // ********************************************
 
@@ -161,38 +161,71 @@ console.log(user2.isAdult);
 
 // ********************************************
 
-// class Friend {
-//   constructor(name, appleAmount, friend = null) {
-//     if (typeof name !== "string") {
-//       throw TypeError("Wrong name type, string expected");
-//     }
-//     if (typeof +appleAmount !== "number" && !Number.isInteger(+appleAmount)) {
-//       throw TypeError("Wrong appleAmount type, integer number expected");
-//     }
-//     if (typeof friend !== "object") {
-//       throw TypeError("Wrong friend type, object expected");
-//     }
+class Friend {
+  constructor(name, appleAmount, friend = null) {
+    if (typeof name !== "string") {
+      throw TypeError("Wrong name type, string expected");
+    }
+    if (typeof +appleAmount !== "number" && !Number.isInteger(+appleAmount)) {
+      throw TypeError("Wrong appleAmount type, integer number expected");
+    }
+    if (typeof friend !== "object") {
+      throw TypeError("Wrong friend type, object expected");
+    }
 
-//     this.name = name;
-//     this.appleAmount = appleAmount;
-//     this.friend = friend;
-//     this.friends = [];
-//   }
+    this.name = name;
+    this.appleAmount = appleAmount;
+    this.friends = [];
+  }
 
-//   getApplesCount() {
-//     let result;
-//     result = this.friends.reduce(result,this.friends.map(friend => friend.appleAmount));
-//     return this.appleAmount + result;
-//     // return this.appleAmount + this.friends.map(friend => friend.appleAmount).reduce();
-//   }
+  // getApplesCount() {      // Это решение работает для одномерного массива друзей, то есть если у друзей тоже есть друзья - уже не сработает
+  //   let result = [];
+  //   if (this.friends.length > 0) {
+  //     console.log(this.friends.map(element => [element.appleAmount, element.friends.map(element => element.appleAmount)]).flat(2).reduce((a, b) => a + b));
+  //     result = this.friends.map(element => element.appleAmount).reduce((a, b) => a + b);
+  //   }
+  //   return this.appleAmount + result;
+  // }
 
-//   addFriend(friend) {
-//     return this.friends.push(friend);
-//   }
-// }
+  // getApplesCount() {      // Это решение работает для двумерного массива, учитывая друзей у которых есть друзья
+  //   let result = [];
+  //   if (this.friends.length > 0) {
+  //     result = this.friends.map(element => [element.appleAmount, element.friends.map(element => element.appleAmount)]).flat(2).reduce((a, b) => a + b);
+  //   }
+  //   return this.appleAmount + result;
+  // }
 
-// const piter = new Friend('Piter', 20);
-// const alex = new Friend('Alex', 15);
-// const vas = new Friend('Vasily', 11);
+  getApplesCount() {        // А это самое универсальное решение, для любого уровня вложенности
+    let result = 0;
+    getFriendsAppleCount(this);
+    function getFriendsAppleCount(friend) {
+      if (friend.friends.length > 0) {
+        friend.friends.forEach(e => getFriendsAppleCount(e));
+      }
+      result += friend.appleAmount;
+    }
+    return result;
+  }
 
-// console.log(vas.getApplesCount());
+
+  
+  addFriend(friend) {
+    return this.friends.push(friend);
+  }
+}
+
+const piter = new Friend('Piter', 10);
+const alex = new Friend('Alex', 20);
+const greg = new Friend('Greg', 10);
+const wilson = new Friend('Wilson', 10);
+const lu = new Friend('Lu', 15);
+const andrew = new Friend('Andrew', 15);
+
+andrew.addFriend(piter);
+andrew.addFriend(alex);
+piter.addFriend(greg);
+piter.addFriend(wilson);
+greg.addFriend(lu);
+
+console.log(andrew);
+console.log(andrew.getApplesCount());
