@@ -16,8 +16,8 @@
 const [btnPrev, btnNext] = document.querySelectorAll('.slider button');
 const img = document.querySelector('img');
 const slides = ['https://images.freeimages.com/images/large-previews/199/sunflowers-6-1392951.jpg',
-'https://images.freeimages.com/images/large-previews/b21/sunflower-1381383.jpg',
-'https://images.freeimages.com/images/large-previews/15c/flower-1537182.jpg']
+  'https://images.freeimages.com/images/large-previews/b21/sunflower-1381383.jpg',
+  'https://images.freeimages.com/images/large-previews/15c/flower-1537182.jpg']
 
 class Slider {
   constructor(slides, currentIndex = 0) {
@@ -43,15 +43,19 @@ class Slider {
 
 const slider = new Slider(slides);
 
-function updateView(str) {
-  str ? slider.currentIndex = slider.nextIndex : slider.currentIndex = slider.prevIndex;
+function updateView(direction) {
+  direction ? slider.currentIndex = slider.nextIndex : slider.currentIndex = slider.prevIndex;
   img.setAttribute('src', slider.currentSlide);
 }
 
-btnNext.addEventListener('click', function () {
-  updateView(1);
-})
-btnPrev.addEventListener('click', function () {
-  updateView(0);
-})
-updateView();
+btnNext.addEventListener('click', () => updateView(1));
+btnPrev.addEventListener('click', () => updateView(0));
+btnNext.dispatchEvent(new Event('click'));
+
+
+const inner = ({target}) => {
+  console.log(target.textContent);
+  console.dir(target);
+}
+
+window.addEventListener('click', inner);
