@@ -1,0 +1,30 @@
+.container {
+  max-width: 1024px;
+  margin: 0 auto;
+}
+
+.cardsContainer {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+}
+
+.cardWrapper {
+
+}
+
+.cardContainer {
+
+}
+
+.cardImage {
+  width: 300px;
+}
+
+.cardName {
+
+}
+
+.cardDescription {
+
+}
