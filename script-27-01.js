@@ -14,7 +14,8 @@ document.body.addEventListener('click', (e) => {
 });
 
 function formSubmitHandler(target) {
-  const { email: { value } } = target;
+  const { email: { value: rawInputValue } } = target;
+  const value = rawInputValue.trim();
   if (value) {
     array.push(value);
     ul.append(createListElement('li', value));
@@ -24,7 +25,8 @@ function formSubmitHandler(target) {
 
 function createListElement(type, value) { // эти две функции очень похожи
   const li = document.createElement(type);
-  li.textContent = value;
+  // li.textContent = value;
+  li.append(document.createTextNode(value));
   li.style.margin = '5px';
   li.append(createDeleteBtn('button', 'Delete item'));
   return li;
@@ -32,7 +34,8 @@ function createListElement(type, value) { // эти две функции оче
 
 function createDeleteBtn(type, value) { // эти две функции очень похожи
   const deleteBtn = document.createElement(type);
-  deleteBtn.textContent = value;
+  // deleteBtn.textContent = value;
+  deleteBtn.append(document.createTextNode(value));
   deleteBtn.style.marginLeft = '10px';
   deleteBtn.addEventListener('click', deleteElementEvent);
   return deleteBtn;
